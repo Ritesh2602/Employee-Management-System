@@ -1,1 +1,1 @@
-web: gunicorn emp_app.wsgi --log-file -
+web: waitress-serve --port=$PORT emp_management_system.wsgi:application
