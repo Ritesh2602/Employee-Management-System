@@ -19,8 +19,9 @@
     Select an employee to be removed
   </button>
   <div class="dropdown-menu">
-      {% for  %}
-    <a class="dropdown-item" href="#">Action</a>
+      {% for emp in emps %}
+    <a class="dropdown-item" href="/del_emp/{{emp.id}}">{{emp.firstName}} {{emp.lastName}}</a>
+    {% endfor %}
   </div>
 </div>
   </div>

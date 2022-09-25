@@ -16,10 +16,10 @@ def add_emp(request):
      if request.method=='POST':
         first_name=request.POST['first_name']
         last_name=request.POST['last_name']
-        dept=int(request.POST['dept'])
+        dept=request.POST['dept']
         salary=int(request.POST['salary'])
         bonus=int(request.POST['bonus'])
-        role=int(request.POST['role'])
+        role=request.POST['role']
         phone=int(request.POST['phone'])
         employee=Employee(firstName=first_name,lastName=last_name,salary=salary,bonus=bonus,phone=phone,dept_id=dept,role_id=role)
         employee.save()
@@ -31,8 +31,12 @@ def add_emp(request):
      else:
          return HttpResponse("Connection error")
 
-def del_emp(request):
-    return render(request,'del_emp.html')
+def del_emp(request,emp_id=0):
+    emp = Employee.objects.all()
+    params = {
+        'emps': emp
+    }
+    return render(request, 'del_emp.html', params)
 
 def filter_emp(request):
     return render(request, 'filter_emp.html')
