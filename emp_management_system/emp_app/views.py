@@ -21,7 +21,12 @@ def add_emp(request):
         bonus=int(request.POST['bonus'])
         role=request.POST['role']
         phone=int(request.POST['phone'])
-        employee=Employee(firstName=first_name,lastName=last_name,salary=salary,bonus=bonus,phone=phone,dept_id=dept,role_id=role)
+
+        Dept = Department(name=dept)
+        RoleEmp = Role(name=role)
+        Dept.save()
+        RoleEmp.save()
+        employee=Employee(firstName=first_name,lastName=last_name,salary=salary,bonus=bonus,phone=phone,dept=Dept,role=RoleEmp)
         employee.save()
         return HttpResponse("Employee added successfully")
 
@@ -32,6 +37,14 @@ def add_emp(request):
          return HttpResponse("Connection error")
 
 def del_emp(request,emp_id=0):
+    if(emp_id):
+        try:
+            emp_to_be_removed=Employee.objects.get(id=emp_id)
+            emp_to_be_removed.delete()
+            return HttpResponse("Employee Removed")
+
+        except:
+          return HttpResponse("ERROR")
     emp = Employee.objects.all()
     params = {
         'emps': emp
