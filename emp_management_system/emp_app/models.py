@@ -23,6 +23,6 @@ class Employee(models.Model):
 
 
     def __str__(self):
-       return  "%s %s %s" %(self.firstName,self.lastName,self.phone)
+       return  "%s %s" %(self.firstName,self.lastName)
 
 
