@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,HttpResponse
 from .models import Department,Role,Employee
 
 # Create your views here.
@@ -10,11 +10,26 @@ def view_emp(request):
     params={
         'emps':emp
     }
-    print(params)
     return render(request, 'view_emp.html',params)
 
 def add_emp(request):
-    return render(request, 'add_emp.html')
+     if request.method=='POST':
+        first_name=request.POST['first_name']
+        last_name=request.POST['last_name']
+        dept=int(request.POST['dept'])
+        salary=int(request.POST['salary'])
+        bonus=int(request.POST['bonus'])
+        role=int(request.POST['role'])
+        phone=int(request.POST['phone'])
+        employee=Employee(firstName=first_name,lastName=last_name,salary=salary,bonus=bonus,phone=phone,dept_id=dept,role_id=role)
+        employee.save()
+        return HttpResponse("Employee added successfully")
+
+     elif request.method=='GET':
+         return render(request,'add_emp.html')
+
+     else:
+         return HttpResponse("Connection error")
 
 def del_emp(request):
     return render(request,'del_emp.html')
