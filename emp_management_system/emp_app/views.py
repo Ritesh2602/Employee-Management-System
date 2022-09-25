@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import render,HttpResponse
 from .models import Department,Role,Employee
 
@@ -52,5 +53,30 @@ def del_emp(request,emp_id=0):
     return render(request, 'del_emp.html', params)
 
 def filter_emp(request):
-    return render(request, 'filter_emp.html')
+    if request.method=='POST':
+        name=request.POST['first_name']
+        dept=request.POST['dept']
+        role=request.POST['role']
+
+        emps=Employee.objects.all()
+
+        if name:
+            emps=emps.filter(Q(firstName__icontains=name) | Q(lastName__icontains=name))
+
+        if dept:
+            emps=emps.filter(dept=dept)
+
+        if role:
+            emps=emps.filter(role=role)
+
+        params={
+            'emps':emps
+        }
+        return render(request, 'view_emp.html',params)
+
+    elif request.method=='GET':
+        return render(request,'filter_emp.html')
+
+    else:
+        HttpResponse("ERROR")
 
